@@ -1,0 +1,30 @@
+## YAML Template.
+---
+test_puppet_1_9_3:
+  image: ruby:1.9.3
+  only:
+    - branches
+  stage: test
+  tags:
+   - test
+  script:
+  - bundle install
+  - bundle exec rake validate lint spec
+test_puppet_2_1_5:
+  image: ruby:2.1.5
+  only:
+    - branches
+  stage: test
+  tags:
+   - test
+  script:
+  - bundle install
+  - bundle exec rake validate lint spec
+deploy:
+  only:
+    - branches
+  stage: deploy
+  tags:
+    - deploy
+  script:
+    - sudo -n -su peadmin /opt/puppetlabs/bin/mco rpc r10k deploy_module module_name=firewall -v
